@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:tower_defense_final/main.dart';
@@ -7,6 +9,7 @@ enum EnemyType { easy, normal, hard, boss }
 
 class Enemy extends SpriteComponent with HasGameReference<MyGame> {
   late double health;
+  late double maxHealth;
   final double baseSpeed = 50;
 
   int waypointIndex = 0;
@@ -18,8 +21,6 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
   @override
   Future<void> onLoad() async {
     _configureEnemy();
-
-    // debugMode = true;
 
     add(RectangleHitbox());
 
@@ -60,19 +61,49 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
     }
   }
 
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    if (health < maxHealth && health > 0) {
+      final barWidth = size.x; // Match the width of the enemy sprite
+      final barHeight = 6.0; // Thickness of the health bar
+      final yOffset = -12.0; // Hover 12 pixels above the enemy's head
+
+      // 2. Calculate how wide the green bar should be
+      double healthPercentage = health / maxHealth;
+      // Safety check to ensure it stays between 0.0 and 1.0
+      healthPercentage = healthPercentage.clamp(0.0, 1.0);
+
+      // 3. Setup the background paint (Red / Empty health)
+      final bgPaint = Paint()..color = const Color(0xFFFF3333);
+      final bgRect = Rect.fromLTWH(0, yOffset, barWidth, barHeight);
+      canvas.drawRect(bgRect, bgPaint);
+
+      final fgPaint = Paint()..color = const Color(0xFF33FF33);
+      final fgRect = Rect.fromLTWH(
+        0,
+        yOffset,
+        barWidth * healthPercentage,
+        barHeight,
+      );
+      canvas.drawRect(fgRect, fgPaint);
+    }
+  }
+
   void addGold() {
     switch (enemyType) {
       case EnemyType.easy:
-        game.gold = game.gold + 10;
+        game.gold = game.gold + 100;
         break;
       case EnemyType.normal:
-        game.gold += 50;
+        game.gold += 200;
         break;
       case EnemyType.hard:
-        game.gold += 100;
+        game.gold += 500;
         break;
       case EnemyType.boss:
-        game.gold += 300;
+        game.gold += 1000;
         break;
     }
   }
@@ -80,22 +111,26 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
   void _configureEnemy() {
     switch (enemyType) {
       case EnemyType.easy:
-        health = 100;
+        health = 500;
+        maxHealth = 500;
         size = Vector2.all(tileSize);
         sprite = game.slimeEasySprite;
         break;
       case EnemyType.normal:
-        health = 250;
+        health = 1000;
+        maxHealth = 1000;
         size = Vector2.all(tileSize + 1);
         sprite = game.slimeNormalSprite;
         break;
       case EnemyType.hard:
-        health = 500;
+        health = 2400;
+        maxHealth = 2400;
         size = Vector2.all(tileSize + 3);
         sprite = game.slimeHardSprite;
         break;
       case EnemyType.boss:
-        health = 800;
+        health = 4600;
+        maxHealth = 4600;
         size = Vector2.all(tileSize + 5);
         sprite = game.slimeBossSprite;
         break;

@@ -9,26 +9,6 @@ class TopToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Enemy> wave1Enemys = [
-      Enemy(EnemyType.easy),
-      Enemy(EnemyType.easy),
-      Enemy(EnemyType.easy),
-    ];
-    List<Enemy> wave2Enemys = [
-      Enemy(EnemyType.normal),
-      Enemy(EnemyType.normal),
-      Enemy(EnemyType.normal),
-    ];
-    List<Enemy> wave3Enemys = [
-      Enemy(EnemyType.hard),
-      Enemy(EnemyType.hard),
-      Enemy(EnemyType.hard),
-    ];
-    List<Enemy> waveBossEnemys = [
-      Enemy(EnemyType.hard),
-      Enemy(EnemyType.hard),
-      Enemy(EnemyType.boss),
-    ];
     return Positioned(
       top: 10,
       left: 10,
@@ -63,19 +43,48 @@ class TopToolbar extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                          onPressed: () => game.wave(wave1Enemys),
+                          onPressed: () => game.wave([
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.easy),
+                          ]),
                           child: const Text('Wave 1'),
                         ),
                         TextButton(
-                          onPressed: () => game.wave(wave2Enemys),
+                          onPressed: () => game.wave([
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.easy),
+                            Enemy(EnemyType.normal),
+                            Enemy(EnemyType.normal),
+                            Enemy(EnemyType.normal),
+                          ]),
                           child: const Text('Wave 2'),
                         ),
                         TextButton(
-                          onPressed: () => game.wave(wave3Enemys),
+                          onPressed: () => game.wave([
+                            Enemy(EnemyType.normal),
+                            Enemy(EnemyType.normal),
+                            Enemy(EnemyType.normal),
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.hard),
+                          ]),
                           child: const Text('Wave 3'),
                         ),
                         TextButton(
-                          onPressed: () => game.wave(waveBossEnemys),
+                          onPressed: () => game.wave([
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.hard),
+                            Enemy(EnemyType.boss),
+                          ]),
                           child: const Text('Boss'),
                         ),
                       ],

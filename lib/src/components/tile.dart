@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flutter/material.dart';
 import 'package:tower_defense_final/main.dart';
 import 'package:tower_defense_final/src/components/tower.dart';
 import 'package:tower_defense_final/src/config.dart';
@@ -9,6 +10,8 @@ class Tile extends SpriteComponent with TapCallbacks, HasGameReference<MyGame> {
   final int gridX;
   final int gridY;
   final int tileType;
+
+  Tower? attachedTower;
 
   Tile(this.gridX, this.gridY, this.tileType);
 
@@ -52,14 +55,125 @@ class Tile extends SpriteComponent with TapCallbacks, HasGameReference<MyGame> {
 
   @override
   void onTapDown(TapDownEvent event) {
-    if (sprite == game.placeForTowerSprite) {
-      final tower = Tower();
+    final BuildContext? context = game.buildContext;
+    if (context == null) return;
 
-      tower.position = position.clone();
+    if (tileType == 2 && attachedTower == null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Colors.grey[900],
+            title: const Text(
+              "Tower Construction",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: const Text(
+              "Would you like to build a basic defensive tower here?",
+              style: TextStyle(color: Colors.white70),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(dialogContext);
+                },
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (game.gold >= tower1BuyCost) {
+                    game.gold -= tower1BuyCost;
 
-      sprite = game.grassSprite;
+                    final newTower = Tower();
+                    newTower.position = position.clone();
+                    sprite = game.grassSprite;
 
-      game.add(tower);
+                    attachedTower = newTower;
+
+                    game.add(newTower);
+                  }
+
+                  Navigator.pop(dialogContext);
+                },
+                child: Text(
+                  "Build (100 Gold)",
+                  style: TextStyle(
+                    color: game.gold >= tower1BuyCost
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    if (attachedTower != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Colors.grey[900],
+            title: const Text(
+              "Tower Management",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: const Text(
+              "Would you like to upgrade or sell your tower?",
+              style: TextStyle(color: Colors.white70),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(dialogContext);
+                },
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (game.gold >= attachedTower!.towerUpgradeCost) {
+                    game.gold -= attachedTower!.towerUpgradeCost;
+
+                    attachedTower!.upgradeTower();
+                  }
+                  Navigator.pop(dialogContext);
+                },
+                child: Text(
+                  "upgrade ${attachedTower!.towerType != TowerType.upgrade6 ? attachedTower!.towerUpgradeCost : "Maxed"}",
+                  style: TextStyle(
+                    color: game.gold >= attachedTower!.towerUpgradeCost
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  game.gold += attachedTower!.towerSellValue;
+                  game.remove(attachedTower!);
+                  attachedTower = null;
+                  sprite = game.placeForTowerSprite;
+                  Navigator.pop(dialogContext);
+                },
+                child: Text(
+                  "Sell (${attachedTower!.towerSellValue} Gold)",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 223, 211, 52),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 }

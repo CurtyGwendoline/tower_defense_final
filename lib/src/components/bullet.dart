@@ -11,12 +11,17 @@ class Bullet extends CircleComponent
   late Vector2 travelDirection;
 
   final double speed = 250;
-  final double damage = 25;
+  // final double damage = 25;
+
+  double damage;
 
   Enemy target;
 
-  Bullet({required Vector2 position, required this.target})
-    : super(position: position);
+  Bullet({
+    required Vector2 position,
+    required this.target,
+    required this.damage,
+  }) : super(position: position);
 
   @override
   FutureOr<void> onLoad() {
