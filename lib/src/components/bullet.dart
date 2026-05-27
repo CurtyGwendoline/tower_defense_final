@@ -11,8 +11,6 @@ class Bullet extends CircleComponent
   late Vector2 travelDirection;
 
   final double speed = 250;
-  // final double damage = 25;
-
   double damage;
 
   Enemy target;

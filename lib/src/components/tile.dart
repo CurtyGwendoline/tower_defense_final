@@ -6,7 +6,6 @@ import 'package:tower_defense_final/src/components/tower.dart';
 import 'package:tower_defense_final/src/config.dart';
 
 class Tile extends SpriteComponent with TapCallbacks, HasGameReference<MyGame> {
-  bool isPathVisual = false;
   final int gridX;
   final int gridY;
   final int tileType;

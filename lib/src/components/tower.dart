@@ -102,37 +102,37 @@ class Tower extends SpriteComponent with HasGameReference<MyGame> {
     switch (towerType) {
       case TowerType.upgrade1:
         towerUpgradeCost = 150;
-        towerSellValue = 90;
+        towerSellValue = 90; // total tower cost 100
         sprite = game.towerUpGrade1;
         damage = 100;
         break;
       case TowerType.upgrade2:
         towerUpgradeCost = 250;
-        towerSellValue = 200;
+        towerSellValue = 200; // total tower cost 250
         sprite = game.towerUpGrade2;
         damage = 150;
         break;
       case TowerType.upgrade3:
         towerUpgradeCost = 350;
-        towerSellValue = 300;
+        towerSellValue = 400; // total tower cost 500
         sprite = game.towerUpGrade3;
         damage = 200;
         break;
       case TowerType.upgrade4:
         towerUpgradeCost = 650;
-        towerSellValue = 550;
+        towerSellValue = 800; // total tower cost 1150
         sprite = game.towerUpGrade4;
         damage = 250;
         break;
       case TowerType.upgrade5:
         towerUpgradeCost = 1000;
-        towerSellValue = 800;
+        towerSellValue = 1500; // total tower cost 2150
         sprite = game.towerUpGrade5;
         damage = 500;
         break;
       case TowerType.upgrade6:
         towerUpgradeCost = 1500;
-        towerSellValue = 1250;
+        towerSellValue = 2500; // total tower cost 3650
         sprite = game.towerUpGrade6;
         damage = 1000;
         break;

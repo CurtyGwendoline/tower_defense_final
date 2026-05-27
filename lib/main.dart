@@ -102,7 +102,7 @@ class MyGame extends FlameGame with HasCollisionDetection {
     towerUpGrade5 = await loadSprite('TowerUpGrade5.png');
     towerUpGrade6 = await loadSprite('TowerUpGrade6.png');
     placeForTowerSprite = await loadSprite('placeForTower.jpg');
-    playerSprite = await loadSprite('playerBase.png');
+    playerSprite = await loadSprite('playerBase.jpg');
 
     slimeEasySprite = await loadSprite('slimeEasy.png');
     slimeNormalSprite = await loadSprite('slimeNormal.png');

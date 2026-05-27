@@ -11,6 +11,7 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
   late double health;
   late double maxHealth;
   final double baseSpeed = 50;
+  
 
   int waypointIndex = 0;
   EnemyType enemyType;
@@ -66,16 +67,13 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
     super.render(canvas);
 
     if (health < maxHealth && health > 0) {
-      final barWidth = size.x; // Match the width of the enemy sprite
-      final barHeight = 6.0; // Thickness of the health bar
-      final yOffset = -12.0; // Hover 12 pixels above the enemy's head
+      final barWidth = size.x;
+      final barHeight = 6.0;
+      final yOffset = -12.0;
 
-      // 2. Calculate how wide the green bar should be
       double healthPercentage = health / maxHealth;
-      // Safety check to ensure it stays between 0.0 and 1.0
       healthPercentage = healthPercentage.clamp(0.0, 1.0);
 
-      // 3. Setup the background paint (Red / Empty health)
       final bgPaint = Paint()..color = const Color(0xFFFF3333);
       final bgRect = Rect.fromLTWH(0, yOffset, barWidth, barHeight);
       canvas.drawRect(bgRect, bgPaint);
