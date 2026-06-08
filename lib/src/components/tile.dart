@@ -8,7 +8,7 @@ import 'package:tower_defense_final/src/config.dart';
 class Tile extends SpriteComponent with TapCallbacks, HasGameReference<MyGame> {
   final int gridX;
   final int gridY;
-  final int tileType;
+  int tileType;
 
   Tower? attachedTower;
 
@@ -58,6 +58,7 @@ class Tile extends SpriteComponent with TapCallbacks, HasGameReference<MyGame> {
     if (context == null) return;
 
     if (tileType == 2 && attachedTower == null) {
+      if (game.isWaveActive()) return;
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
@@ -98,7 +99,7 @@ class Tile extends SpriteComponent with TapCallbacks, HasGameReference<MyGame> {
                   Navigator.pop(dialogContext);
                 },
                 child: Text(
-                  "Build (100 Gold)",
+                  "Build ($tower1BuyCost Gold)",
                   style: TextStyle(
                     color: game.gold >= tower1BuyCost
                         ? Colors.green

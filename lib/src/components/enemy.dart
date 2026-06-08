@@ -11,13 +11,14 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
   late double health;
   late double maxHealth;
   final double baseSpeed = 50;
-  
+  final int waveNumber;
+  late int damage;
 
   int waypointIndex = 0;
   EnemyType enemyType;
   Vector2 moveDirection = Vector2.zero();
 
-  Enemy(this.enemyType);
+  Enemy(this.enemyType, {required this.waveNumber});
 
   @override
   Future<void> onLoad() async {
@@ -41,6 +42,7 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
     }
 
     if (waypointIndex >= game.waypoints.length) {
+      game.damagePlayer(damage);
       removeFromParent();
       return;
     }
@@ -92,16 +94,16 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
   void addGold() {
     switch (enemyType) {
       case EnemyType.easy:
-        game.gold = game.gold + 100;
+        game.gold = game.gold + 50;
         break;
       case EnemyType.normal:
-        game.gold += 200;
+        game.gold += 100;
         break;
       case EnemyType.hard:
-        game.gold += 500;
+        game.gold += 250;
         break;
       case EnemyType.boss:
-        game.gold += 1000;
+        game.gold += 600;
         break;
     }
   }
@@ -109,29 +111,36 @@ class Enemy extends SpriteComponent with HasGameReference<MyGame> {
   void _configureEnemy() {
     switch (enemyType) {
       case EnemyType.easy:
-        health = 500;
-        maxHealth = 500;
+        health = 300;
+        maxHealth = 300;
+        damage = 50;
         size = Vector2.all(tileSize);
         sprite = game.slimeEasySprite;
         break;
       case EnemyType.normal:
-        health = 1000;
-        maxHealth = 1000;
+        health = 700;
+        maxHealth = 700;
+        damage = 150;
         size = Vector2.all(tileSize + 1);
         sprite = game.slimeNormalSprite;
         break;
       case EnemyType.hard:
-        health = 2400;
-        maxHealth = 2400;
+        health = 1400;
+        maxHealth = 1400;
+        damage = 250;
         size = Vector2.all(tileSize + 3);
         sprite = game.slimeHardSprite;
         break;
       case EnemyType.boss:
-        health = 4600;
-        maxHealth = 4600;
+        health = 3600;
+        maxHealth = 3600;
+        damage = 500;
         size = Vector2.all(tileSize + 5);
         sprite = game.slimeBossSprite;
         break;
     }
+    double boostFactor = 1.0 + (waveNumber * 0.15);
+    health = health * boostFactor;
+    maxHealth = health;
   }
 }

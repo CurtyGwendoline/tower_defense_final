@@ -41,7 +41,6 @@ class Bullet extends CircleComponent
   }
 
   @override
-  @override
   void update(double dt) {
     position += travelDirection * dt;
 
